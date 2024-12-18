@@ -2,14 +2,17 @@ package com.kh.SpringJpa241217.controller;
 
 import com.kh.SpringJpa241217.dto.LoginReqDto;
 import com.kh.SpringJpa241217.dto.MemberReqDto;
-import com.kh.SpringJpa241217.entity.Member;
+
 import com.kh.SpringJpa241217.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+// 1.POSTMAN으로 회원 존재여부 확인, 회원가입, 로그인
+// 2.회원 전체 조회 및 회원 이메일 조회 만들기 (POSTMAN)
+// 3. SWAGGER 등록 후 회원 존재여부 확인, 회원가입, 로그인, 회원 전체조회, 개별 회원 조회, 회원 삭제
+// 4. MemberController : 회원 전체 조회, 개별 회원 조회, 회원정보 수정, 회원 삭제
 
 @Slf4j
 @CrossOrigin(origins = "http://localhost:3000")

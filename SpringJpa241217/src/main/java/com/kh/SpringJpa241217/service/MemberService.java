@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -49,6 +48,19 @@ public class MemberService {
               return true;
         } catch (Exception e) {
             log.error(" 회원 정보 수정 : {}", e.getMessage());
+            return false;
+        }
+    }
+
+    // 회원 삭제
+    public boolean deleteMember(String email) {
+        try {
+            Member member = memberRepository.findByEmail(email)
+                    .orElseThrow(()->new RuntimeException("해당 회원이 존재하지 않습니다."));
+            memberRepository.delete(member);
+            return true;
+        } catch (Exception e) {
+            log.error("회원 삭제에 실패하였습니다 : {}", e.getMessage());
             return false;
         }
     }
