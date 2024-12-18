@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 // 1.POSTMAN으로 회원 존재여부 확인, 회원가입, 로그인
 // 2.회원 전체 조회 및 회원 이메일 조회 만들기 (POSTMAN)
-// 3. SWAGGER 등록 후 회원 존재여부 확인, 회원가입, 로그인, 회원 전체조회, 개별 회원 조회, 회원 삭제
-// 4. MemberController : 회원 전체 조회, 개별 회원 조회, 회원정보 수정, 회원 삭제
+// 3.SWAGGER 등록 후 회원 존재여부 확인, 회원가입, 로그인, 회원 전체조회, 개별 회원 조회, 회원 삭제
+// 4.MemberController : 회원 전체 조회, 개별 회원 조회, 회원정보 수정, 회원 삭제
 
 @Slf4j
 @CrossOrigin(origins = "http://localhost:3000")
@@ -30,21 +30,8 @@ public class AuthController {
         return ResponseEntity.ok(isTrue);
     }
 
-//    // 회원 전체 조회
-//    @GetMapping("/allSearch")
-//    public ResponseEntity<List<Member>> allSearch() {
-//        List<Member> members = authService.allSearch();
-//        return ResponseEntity.ok(members);
-//    }
-//
-//    // 해당 회원 정보 조회
-//    @GetMapping("/emailInfoSearch")
-//    public ResponseEntity<List<Member>> emailInfo(@PathVariable String email) {
-//        List<Member> member = authService.emailInfoSearch(email);
-//        return ResponseEntity.ok(member);
-//    }
     // 회원 가입
-    @PostMapping("/signUp")
+    @PostMapping("/signup")
     public ResponseEntity<Boolean> signup(@RequestBody MemberReqDto memberReqDto) {
         boolean isSuccess = authService.singUp(memberReqDto);
         return ResponseEntity.ok(isSuccess);
