@@ -23,7 +23,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     List<Item> findByPriceGreaterThanEqualAndItemSellStatus(int price, ItemSellStatus itemSellStatus);
 
     // 상품 가격에 대한 내림 차순 정렬하기
-    List<Item> findByPriceLessThanOrderByPrice(int price);
+    List<Item> findAllByOrderByPriceDesc();
 
     // 상품 이름에 특정 키워드가 포함된 상품 검색
     List<Item> findByItemNumContaining(String keyword);

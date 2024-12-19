@@ -30,7 +30,8 @@ class ItemRepositoryTest {
             item.setItemNum("테스트 상품" + i);
             item.setPrice(1000 * i);
             item.setItemDetail("테스트 상품 상세 설명" + i);
-            item.setItemSellStatus(ItemSellStatus.SELL);
+            if( i % 2 == 0) item.setItemSellStatus(ItemSellStatus.SELL);
+            else item.setItemSellStatus(ItemSellStatus.SOLD_OUT);
             item.setStockNumber(100);
             item.setRegTime(LocalDateTime.now());
             item.setUpdateTime(LocalDateTime.now());
@@ -76,6 +77,38 @@ class ItemRepositoryTest {
         List<Item> sellItem = itemRepository.findByPriceGreaterThanEqualAndItemSellStatus(5000,
                 ItemSellStatus.SELL);
         for (Item item : sellItem) {
+            log.info("상품 조회 테스트 : {}", item);
+        }
+    }
+
+    @Test
+    @DisplayName("상품 가격 내림차순")
+    public void findAllByOrderByPriceDescTest() {
+        this.createItemTest();
+        List<Item> OrderByItem = itemRepository.findAllByOrderByPriceDesc();
+        for (Item item : OrderByItem) {
+            log.info("상품 조회 테스트 : {}", item);
+        }
+    }
+
+
+    @Test
+    @DisplayName("특정키워드 검색")
+    public void findByItemNumContainingTest() {
+        this.createItemTest();
+        List<Item> containingByItem = itemRepository.findByItemNumContaining("상품10");
+        for (Item item : containingByItem) {
+            log.info("상품 조회 테스트 : {}", item);
+        }
+    }
+
+
+    @Test
+    @DisplayName("상품명과 가격으로 검색")
+    public void findByItemNumAndPriceTest() {
+        this.createItemTest();
+        List<Item> findByItem = itemRepository.findByItemNumAndPrice("테스트 상품10",10000);
+        for (Item item : findByItem) {
             log.info("상품 조회 테스트 : {}", item);
         }
     }
