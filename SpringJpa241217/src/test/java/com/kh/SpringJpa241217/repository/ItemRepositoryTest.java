@@ -48,4 +48,35 @@ class ItemRepositoryTest {
             log.info("상품 조회 테스트 : {}", item);
         }
     }
+
+    @Test
+    @DisplayName("상품명 및 상세 설명으로 조회")
+    public void findByItemNumOrItemDetailTest() {
+        this.createItemTest();
+        List<Item> findItem = itemRepository.findByItemNumOrItemDetail("테스트 상품2","테스트 상품 상세 설명3");
+        for(Item item : findItem) {
+            log.info("상품 조회 테스트 : {}", item);
+        }
+    }
+
+    @Test
+    @DisplayName("상품명 및 상세 설명으로 조회")
+    public void findByPriceLessThanTest() {
+        this.createItemTest();
+        List<Item> lessThanItem = itemRepository.findByPriceLessThan(5000);
+        for(Item item : lessThanItem) {
+            log.info("상품 조회 테스트 : {}", item);
+        }
+    }
+
+    @Test
+    @DisplayName("설정 금액이상인 판매 중 상품 조회")
+    public void findByPriceGreaterThanEqualAndItemSellStatusTest() {
+        this.createItemTest();
+        List<Item> sellItem = itemRepository.findByPriceGreaterThanEqualAndItemSellStatus(5000,
+                ItemSellStatus.SELL);
+        for (Item item : sellItem) {
+            log.info("상품 조회 테스트 : {}", item);
+        }
+    }
 }
