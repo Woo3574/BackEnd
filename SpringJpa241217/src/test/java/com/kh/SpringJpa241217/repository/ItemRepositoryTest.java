@@ -123,4 +123,15 @@ class ItemRepositoryTest {
             log.info("JPQL Like 검색 : {}", item);
         }
     }
+
+    // native Query 테스트
+    @Test
+    @DisplayName("native query 테스트")
+    public void findByNativeQueryTest() {
+        this.createItemTest();
+        List<Item> itemList = itemRepository.findByItemDetailNative("설명1");
+        for ( Item item : itemList) {
+            log.info("JPQL Like 검색 : {}", item);
+        }
+    }
 }
