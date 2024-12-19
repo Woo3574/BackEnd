@@ -51,12 +51,12 @@ class ItemRepositoryTest {
     }
 
     @Test
-    @DisplayName("상품명 및 상세 설명으로 조회")
+    @DisplayName(" OR 조건 테스트")
     public void findByItemNumOrItemDetailTest() {
         this.createItemTest();
         List<Item> findItem = itemRepository.findByItemNumOrItemDetail("테스트 상품2","테스트 상품 상세 설명3");
         for(Item item : findItem) {
-            log.info("상품 조회 테스트 : {}", item);
+            log.info("상품 OR 테스트 : {}", item);
         }
     }
 
@@ -87,7 +87,7 @@ class ItemRepositoryTest {
         this.createItemTest();
         List<Item> OrderByItem = itemRepository.findAllByOrderByPriceDesc();
         for (Item item : OrderByItem) {
-            log.info("상품 조회 테스트 : {}", item);
+            log.info("가격에 대한 내림차순 정렬 : {}", item);
         }
     }
 
@@ -110,6 +110,17 @@ class ItemRepositoryTest {
         List<Item> findByItem = itemRepository.findByItemNumAndPrice("테스트 상품10",10000);
         for (Item item : findByItem) {
             log.info("상품 조회 테스트 : {}", item);
+        }
+    }
+
+    // JPQL 테스트
+    @Test
+    @DisplayName("JPQL 상품 상세 정보 텍스트")
+    public void findByJPQLTest() {
+        this.createItemTest();
+        List<Item> itemList = itemRepository.findByItemDetail("설명1");
+        for ( Item item : itemList) {
+            log.info("JPQL Like 검색 : {}", item);
         }
     }
 }

@@ -3,6 +3,8 @@ package com.kh.SpringJpa241217.repository;
 import com.kh.SpringJpa241217.constant.ItemSellStatus;
 import com.kh.SpringJpa241217.entity.Item;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -30,4 +32,14 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     // 상품명과 가격이 일치하는 상품 검색(AND)
     List<Item> findByItemNumAndPrice(String itemNum, int price);
+
+    // JPQL(Java Persistence Query Language) : 객체지향 쿼리 언어, 테이블이 아닌 엔티티 속성에 대해 작동
+    @Query("SELECT i FROM Item i where i.itemDetail LIKE %:itemDetail% ORDER BY i.price DESC")
+    List<Item>findByItemDetail(@Param("itemDetail") String itemDetail );
+
+    // nativeQuery 사용
+    @Query (value = "SELECT * FROM item i WHERE i.item_detail LIKE %:itemDetail% ORDER BY i.price desc",
+    nativeQuery = true)
+    List<Item> findByItemDetailNative(@Param("itemDetail") String itemDetail);
+
 }
