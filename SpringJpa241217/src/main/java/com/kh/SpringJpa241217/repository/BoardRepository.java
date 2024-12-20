@@ -10,5 +10,6 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     List<Board> findByTitleContaining(String keyword);
 
     // 제목과 내용 검색관련
-    List<Board> findByTitleContainingOrContentContaining(String titleKeyword, String contentKeyword);
+    List<Board> findByTitleContainingOrContentContaining(String title, String content);
+
 }

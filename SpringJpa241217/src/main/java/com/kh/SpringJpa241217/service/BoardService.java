@@ -115,16 +115,28 @@ public class BoardService {
     }
 
     // 게시글 수정
-    public void updateBoard(Long boardID, BoardReqDto boardReqDto) {
-        Board board = boardRepository.findById(boardID)
-                .orElseThrow(() -> new RuntimeException("해당 게시글이 존재하지 않습니다."));
-        String authBoard = board.getMember().getEmail();
-        if (authBoard.equals(boardReqDto.getEmail())) {
-            board.setTitle(boardReqDto.getTitle());
-            board.setContent(board.getContent());
-            board.setImgPAth(boardReqDto.getImgPath());
-            boardRepository.save(board);
-        }
+    public boolean modifyBoard(Long id, BoardReqDto boardReqDto) {
+       try {
+           Board board = boardRepository.findById(id)
+                   .orElseThrow(() -> new RuntimeException("해당 게시글이 존재하지 않습니다."));
+
+           memberRepository.findByEmail(boardReqDto.getEmail())
+                   .orElseThrow(() -> new RuntimeException("회원이 존재 하지 않습니다."));
+
+           if (board.getMember().getEmail().equals(boardReqDto.getEmail())) {
+               board.setTitle(boardReqDto.getTitle());
+               board.setContent(boardReqDto.getContent());
+               board.setImgPAth(boardReqDto.getImgPath());
+               boardRepository.save(board); // update
+               return true;
+           } else {
+               log.error("게시글은 작성자만 수정 할 수 있습니다.");
+               return false;
+           }
+       } catch (Exception e) {
+           log.error("게시글 수정 실패");
+           return false;
+       }
     }
 
     // 게시글 검색 (제목과 내용)
