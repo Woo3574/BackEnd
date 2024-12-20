@@ -41,9 +41,18 @@ public class BoardController {
         }
 
         // 게시글 상세 조회
-
+        @GetMapping("/detail/{id}")
+        public ResponseEntity<BoardResDto> boardDetail(@PathVariable Long id) {
+            BoardResDto boardResDto = boardService.findByBoardId(id);
+            return ResponseEntity.ok(boardResDto);
+        }
 
         // 게시글 삭제
+        @DeleteMapping("/{id}")
+        public ResponseEntity<Boolean> deleteBoard(@PathVariable Long id, @RequestParam String email) {
+            boolean isSuccess = boardService.deleteBoard(id, email);
+            return ResponseEntity.ok(isSuccess);
+        }
 
         // 게시글 페이징 카운트
         public ResponseEntity<Integer> boardPageCnt(@RequestParam(defaultValue = "0") int page,
@@ -61,6 +70,18 @@ public class BoardController {
         }
 
         // 게시글 제목 검색
+        @GetMapping("/search-title")
+        public ResponseEntity<List<BoardResDto>> boardSearchTitle(@RequestParam String keyword) {
+            List<BoardResDto> list = boardService.searchBoard(keyword);
+            return ResponseEntity.ok(list);
+        }
+
 
         // 게시글 제목과 내용 검색
+        @GetMapping("/search-title-content")
+        public ResponseEntity<List<BoardResDto>> boardSearchTitleContent(@RequestParam String title,
+                                                                         @RequestParam String content) {
+            List<BoardResDto> list = boardService.searchTitleOrContentBoard(title, content);
+            return ResponseEntity.ok(list);
+        }
 }

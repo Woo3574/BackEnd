@@ -140,8 +140,8 @@ public class BoardService {
     }
 
     // 게시글 검색 (제목과 내용)
-    public List<BoardResDto> bothSearchBoard(String keyWord) {
-        List<Board> boards = boardRepository.findByTitleContainingOrContentContaining(keyWord, keyWord);
+    public List<BoardResDto> searchTitleOrContentBoard(String title, String content) {
+        List<Board> boards = boardRepository.findByTitleContainingOrContentContaining(title, content);
 
         List<BoardResDto> boardResDtoList = new ArrayList<>();
         for (Board board : boards) {
