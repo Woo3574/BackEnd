@@ -8,6 +8,8 @@ import com.kh.SpringJpa241217.repository.BoardRepository;
 import com.kh.SpringJpa241217.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +22,7 @@ import java.util.List;
 public class BoardService {
     private final BoardRepository boardRepository; // 의존성 주입
     private final MemberRepository memberRepository;
+
     // 게시글 등록
     @Transactional
     public boolean saveBoard(BoardReqDto boardReqDto) {
@@ -45,7 +48,7 @@ public class BoardService {
     // 게시글 상세 조회
     public BoardResDto findByBoardId(Long id) {
         Board board = boardRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("해당 게시글이 존재하지 않습니다."));
+                .orElseThrow(() -> new RuntimeException("해당 게시글이 존재하지 않습니다."));
 
         return convertEntityToDto(board);
     }
@@ -54,21 +57,86 @@ public class BoardService {
     public List<BoardResDto> findAllBoard() {
         List<Board> boards = boardRepository.findAll(); // DB에 있는 모든 게시글 가져오기
         List<BoardResDto> boardResDtoList = new ArrayList<>();
-        for(Board board : boards) {
-            BoardResDto boardResDto = new BoardResDto();
-            boardResDto.setBoardId(board.getId());
-            boardResDto.setTitle(board.getTitle());
-            boardResDto.setContent(board.getContent());
-            boardResDto.setImgPath((board.getImgPAth()));
-            boardResDto.setRegDate(board.getRegDate());
-            boardResDtoList.add(boardResDto);
+        for (Board board : boards) {
+            // convertEntityToDto를 통해서 BoardResDto반환 받아서 List에 추가
+            boardResDtoList.add(convertEntityToDto(board));
         }
         return boardResDtoList;
     }
 
     // 게시글 검색 기능
     public List<BoardResDto> searchBoard(String keyword) {
+        List<Board> boards = boardRepository.findByTitleContaining(keyword);
+        List<BoardResDto> boardResDtoList = new ArrayList<>();
+        for (Board board : boards) {
+            // convertEntityToDto를 통해서 BoardResDto반환 받아서 List에 추가
+            boardResDtoList.add(convertEntityToDto(board));
+        }
+        return boardResDtoList;
+    }
 
+    // size는 프론트엔드에서 지정해줘야함
+    // 게시글 페이지 수 조회, 첫 페이지 화면열때만(렌더링) 호출하면됨
+    public int getBoardPageCount(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return boardRepository.findAll(pageRequest).getTotalPages();
+    }
+
+    // 게시글 페이징
+    public List<BoardResDto> pagingBoardList(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        List<Board> boards = boardRepository.findAll(pageable).getContent();
+        List<BoardResDto> boardResDtoList = new ArrayList<>();
+        for (Board board : boards) {
+            // convertEntityToDto를 통해서 BoardResDto반환 받아서 List에 추가
+            boardResDtoList.add(convertEntityToDto(board));
+        }
+        return boardResDtoList;
+    }
+
+    // 게시글 삭제
+    public boolean deleteBoard(Long id, String email) {
+       try {
+           // 삭제전에 존재 여부 확인
+           Board board = boardRepository.findById(id)
+                   .orElseThrow(() -> new RuntimeException("해당 게시글이 존재하지 않습니다."));
+           // 삭제 진행
+           if (board.getMember().getEmail().equals(email)) {
+               boardRepository.delete(board);
+               return true;
+           } else {
+               log.error("게시글은 작성자만 지울 수 있습니다.");
+               return false;
+           }
+       } catch (Exception e) {
+           log.error("게시글 삭제 실패 : {}", e.getMessage());
+           return false;
+       }
+    }
+
+    // 게시글 수정
+    public void updateBoard(Long boardID, BoardReqDto boardReqDto) {
+        Board board = boardRepository.findById(boardID)
+                .orElseThrow(() -> new RuntimeException("해당 게시글이 존재하지 않습니다."));
+        String authBoard = board.getMember().getEmail();
+        if (authBoard.equals(boardReqDto.getEmail())) {
+            board.setTitle(boardReqDto.getTitle());
+            board.setContent(board.getContent());
+            board.setImgPAth(boardReqDto.getImgPath());
+            boardRepository.save(board);
+        }
+    }
+
+    // 게시글 검색 (제목과 내용)
+    public List<BoardResDto> bothSearchBoard(String keyWord) {
+        List<Board> boards = boardRepository.findByTitleContainingOrContentContaining(keyWord, keyWord);
+
+        List<BoardResDto> boardResDtoList = new ArrayList<>();
+        for (Board board : boards) {
+            // convertEntityToDto를 통해서 BoardResDto반환 받아서 List에 추가
+            boardResDtoList.add(convertEntityToDto(board));
+        }
+        return boardResDtoList;
     }
 
     private BoardResDto convertEntityToDto(Board board) {
