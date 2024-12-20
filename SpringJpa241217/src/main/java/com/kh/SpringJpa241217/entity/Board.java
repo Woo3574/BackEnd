@@ -32,5 +32,5 @@ public class Board {
 
     @ManyToOne
     @JoinColumn(name = "member_id")
-    private Member member;
+    private Member member; // 회원에 대한 참조변수, 가입되어있던 회원 (게시판 글작성하는 사람에 대한 정보)
 }
