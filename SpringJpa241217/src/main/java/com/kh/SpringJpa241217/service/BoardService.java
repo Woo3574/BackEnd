@@ -159,7 +159,17 @@ public class BoardService {
             Board board = boardRepository.findById(boardId)
                     .orElseThrow(()-> new RuntimeException("해당 게시글이 없습니다"));
 
-
+            List<CommentResDto> commentResDtoList = new ArrayList<>();
+            for (Comment comment : board.getComments()) {
+                CommentResDto commentResDto = new CommentResDto();
+                commentResDto.setEmail(comment.getMember().getEmail());
+                commentResDto.setBoardId(comment.getBoard().getId());
+                commentResDto.setCommentId(comment.getCommentId());
+                commentResDto.setContent(comment.getContent());
+                commentResDto.setRegDate(comment.getRegDate());
+                commentResDtoList.add(commentResDto);
+            }
+            return commentResDtoList;
         } catch (Exception e) {
             log.error("게시글에 대한 댓글 조회 실패 : {}",e.getMessage());
             return null;
@@ -173,6 +183,18 @@ public class BoardService {
         boardResDto.setContent(board.getContent());
         boardResDto.setImgPath((board.getImgPAth()));
         boardResDto.setRegDate(board.getRegDate());
+
+        List<CommentResDto> commentResDtoList = new ArrayList<>();
+        for (Comment comment : board.getComments()) {
+            CommentResDto commentResDto = new CommentResDto();
+            commentResDto.setEmail(comment.getMember().getEmail());
+            commentResDto.setBoardId(comment.getBoard().getId());
+            commentResDto.setCommentId(comment.getCommentId());
+            commentResDto.setContent(comment.getContent());
+            commentResDto.setRegDate(comment.getRegDate());
+            commentResDtoList.add(commentResDto);
+        }
+        boardResDto.setComments(commentResDtoList);
         return boardResDto;
     }
 }
