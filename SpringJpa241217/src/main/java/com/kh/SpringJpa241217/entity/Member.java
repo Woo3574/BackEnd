@@ -17,12 +17,12 @@ import java.util.List;
 @Entity // 해당 클래스가 Entity 임을 나타냄
 @Table(name="member") // 테이블 이름을 지정, 테이블 이름은 소문자, 카멜 표기법은 -> snake 표기법으로 변경 됨.
 // ToString 오버라이딩
-// JPA는 설계 명세
+// Jpa 는 설계 명세
 
 public class Member {
     @Id // 해당 필드를 기본키로 지정
-    @Column(name="member_id") // DB_Table에서 열 이름
-    @GeneratedValue(strategy = GenerationType.AUTO) // 기본키 생성 전략, JPA가 자동으로 생성 전략을 정함
+    @Column(name="member_id") // DB_Table 에서 열 이름
+    @GeneratedValue(strategy = GenerationType.AUTO) // 기본키 생성 전략, Jpa 가 자동으로 생성 전략을 정함
     private Long id; // Primary Key
 
     @Column(nullable = false, length = 50) // null 값이 올수 없다는 제약 조건
@@ -40,9 +40,9 @@ public class Member {
     @Column (name = "image_path")
     private String imgPath;
 
-    @PrePersist //JPA
+    @PrePersist //JPA, 엔티티가 저장되기 직전에 실행
     protected void onCreate() { // JPA의 콜백 메서드로 엔티티가 저장되기 전에 실행; DB 데이터가 삽입되기 전에 자동 설정
-        this.regDate = LocalDateTime.now();
+        this.regDate = LocalDateTime.now(); // 등록 일자를 현재 시간으로 설정
     }
 
     // 게시글 목록에 대한 OneToMany

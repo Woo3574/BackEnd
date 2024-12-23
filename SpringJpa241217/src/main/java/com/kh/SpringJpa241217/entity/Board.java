@@ -9,12 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Table(name = "board")
-@NoArgsConstructor
-@Entity
+@Table(name = "board") // DB Table 이름
+@NoArgsConstructor // 기본 생성자를 생성해주는 어노테이션
+@Entity // 해당 클래스를 JPA Entity 선언
 
 public class Board {
-    @Id
+    @Id // 기본 키 (Primary Key)
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "board_id")
     private Long id;
