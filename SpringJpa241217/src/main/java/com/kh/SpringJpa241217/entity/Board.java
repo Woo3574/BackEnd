@@ -19,6 +19,7 @@ public class Board {
 
     @Column(nullable = false)
     private String title; // 글 제목
+
     @Lob
     @Column(length = 1000)
     private String content; // 글 내용
