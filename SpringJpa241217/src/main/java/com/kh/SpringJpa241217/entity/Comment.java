@@ -30,7 +30,8 @@ public class Comment {
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime regDate;
-    @PrePersist
+
+    @PrePersist // Jpa 콜백, DB에 쓰기직전에 불러서 DB에 써준다,(아래 작성한 것 처럼)시간을 자동으로 입력
     public void prePersist() {
         regDate = LocalDateTime.now();
     }

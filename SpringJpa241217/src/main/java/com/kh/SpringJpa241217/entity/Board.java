@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Table(name = "board")
@@ -34,4 +36,7 @@ public class Board {
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member; // 회원에 대한 참조변수, 가입되어있던 회원 (게시판 글작성하는 사람에 대한 정보)
+
+    @OneToMany(mappedBy = "board") // 주인이 아님을 의미, 즉 객체를 참조만 함
+    private List<Comment> comments = new ArrayList<>();
 }

@@ -2,7 +2,9 @@ package com.kh.SpringJpa241217.service;
 
 import com.kh.SpringJpa241217.dto.BoardReqDto;
 import com.kh.SpringJpa241217.dto.BoardResDto;
+import com.kh.SpringJpa241217.dto.CommentResDto;
 import com.kh.SpringJpa241217.entity.Board;
+import com.kh.SpringJpa241217.entity.Comment;
 import com.kh.SpringJpa241217.entity.Member;
 import com.kh.SpringJpa241217.repository.BoardRepository;
 import com.kh.SpringJpa241217.repository.MemberRepository;
@@ -149,6 +151,19 @@ public class BoardService {
             boardResDtoList.add(convertEntityToDto(board));
         }
         return boardResDtoList;
+    }
+
+    // 댓글 목록 조회
+    public List<CommentResDto> commentList(Long boardId) {
+        try {
+            Board board = boardRepository.findById(boardId)
+                    .orElseThrow(()-> new RuntimeException("해당 게시글이 없습니다"));
+
+
+        } catch (Exception e) {
+            log.error("게시글에 대한 댓글 조회 실패 : {}",e.getMessage());
+            return null;
+        }
     }
 
     private BoardResDto convertEntityToDto(Board board) {
