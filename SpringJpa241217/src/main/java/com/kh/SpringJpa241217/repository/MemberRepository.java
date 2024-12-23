@@ -1,6 +1,7 @@
 package com.kh.SpringJpa241217.repository;
 
 import com.kh.SpringJpa241217.entity.Member;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,4 +15,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByPwd(String pwd);
     Optional<Member> findByEmailAndPwd(String email, String pwd);
 
+    @EntityGraph(attributePaths = "boards")
+    Optional<Member> findById(Long id);
 }

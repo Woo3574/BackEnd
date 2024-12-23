@@ -61,7 +61,7 @@ public class BoardService {
         List<BoardResDto> boardResDtoList = new ArrayList<>();
         for (Board board : boards) {
             // convertEntityToDto를 통해서 BoardResDto반환 받아서 List에 추가
-            boardResDtoList.add(convertEntityToDto(board));
+            boardResDtoList.add(convertEntityToDtoWithoutComments(board));
         }
         return boardResDtoList;
     }
@@ -91,7 +91,7 @@ public class BoardService {
         List<BoardResDto> boardResDtoList = new ArrayList<>();
         for (Board board : boards) {
             // convertEntityToDto를 통해서 BoardResDto반환 받아서 List에 추가
-            boardResDtoList.add(convertEntityToDto(board));
+            boardResDtoList.add(convertEntityToDtoWithoutComments(board));
         }
         return boardResDtoList;
     }
@@ -195,6 +195,18 @@ public class BoardService {
             commentResDtoList.add(commentResDto);
         }
         boardResDto.setComments(commentResDtoList);
+        return boardResDto;
+    }
+
+    // 댓글 제외 DTO
+    private BoardResDto convertEntityToDtoWithoutComments(Board board) {
+        BoardResDto boardResDto = new BoardResDto();
+        boardResDto.setBoardId(board.getId());
+        boardResDto.setTitle(board.getTitle());
+        boardResDto.setContent(board.getContent());
+        boardResDto.setImgPath((board.getImgPAth()));
+        boardResDto.setRegDate(board.getRegDate());
+        boardResDto.setComments(new ArrayList<>());
         return boardResDto;
     }
 }

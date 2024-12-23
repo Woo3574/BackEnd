@@ -1,8 +1,10 @@
 package com.kh.SpringJpa241217.service;
 
 
+import com.kh.SpringJpa241217.dto.BoardResDto;
 import com.kh.SpringJpa241217.dto.MemberReqDto;
 import com.kh.SpringJpa241217.dto.MemberResDto;
+import com.kh.SpringJpa241217.entity.Board;
 import com.kh.SpringJpa241217.entity.Member;
 import com.kh.SpringJpa241217.repository.MemberRepository;
 import lombok.AllArgsConstructor;
@@ -72,6 +74,20 @@ public class MemberService {
         memberResDto.setName(member.getName());
         memberResDto.setRegDate(member.getRegDate());
         memberResDto.setImagePath(member.getImgPath());
+
+        List<BoardResDto> boardResDtoList = new ArrayList<>();
+        for (Board board : member.getBoards()) {
+            BoardResDto boardResDto = new BoardResDto();
+            boardResDto.setBoardId(board.getId());
+            boardResDto.setTitle(board.getTitle());
+            boardResDto.setContent(board.getContent());
+            boardResDto.setImgPath(board.getImgPAth());
+            boardResDto.setRegDate(board.getRegDate());
+            boardResDtoList.add(boardResDto);
+
+        }
+        memberResDto.setBoards(boardResDtoList);
+
         return memberResDto;
     }
 }

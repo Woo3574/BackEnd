@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Data
@@ -42,4 +44,8 @@ public class Member {
     protected void onCreate() { // JPA의 콜백 메서드로 엔티티가 저장되기 전에 실행; DB 데이터가 삽입되기 전에 자동 설정
         this.regDate = LocalDateTime.now();
     }
+
+    // 게시글 목록에 대한 OneToMany
+    @OneToMany(mappedBy = "member") // 주인이 아님을 의미, 즉 객체를 참조만 함
+    private List<Board> boards = new ArrayList<>();
 }
