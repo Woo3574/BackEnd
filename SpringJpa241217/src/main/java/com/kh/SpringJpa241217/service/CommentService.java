@@ -23,7 +23,7 @@ public class CommentService {
     @Transactional
     public boolean commentRegister(CommentReqDto commentReqDto) {
         try {
-
+            return true;
         } catch (Exception e) {
             log.error("댓글 등록 실패: {}", e.getMessage());
             return false;
