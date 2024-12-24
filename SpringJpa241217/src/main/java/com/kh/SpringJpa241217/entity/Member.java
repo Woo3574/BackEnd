@@ -48,6 +48,7 @@ public class Member {
     // 게시글 목록에 대한 OneToMany
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true) // 주인이 아님을 의미, 즉 객체를 참조만 함
     private List<Board> boards = new ArrayList<>();
+    
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true) // 주인이 아님을 의미, 즉 객체를 참조만 함
     private List<Comment> comments = new ArrayList<>();
 }
