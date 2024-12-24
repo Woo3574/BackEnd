@@ -57,7 +57,7 @@ public class CommentService {
                     .orElseThrow(()-> new RuntimeException("댓글이 존재하지 않습니다"));
 
             // 작성자 확인
-            if(!comment.getMember().getEmail().equals(email)) {
+            if(comment.getMember().getEmail().equals(email)) {
                 commentRepository.delete(comment);
                 return true;
             } else {
