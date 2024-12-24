@@ -37,7 +37,7 @@ public class BoardService {
             // dto 프론트엔드에서 가져온데이터
             Board board = new Board();
             board.setTitle(boardReqDto.getTitle());
-            board.setImgPAth(boardReqDto.getImgPath());
+            board.setImgPath(boardReqDto.getImgPath());
             board.setContent(boardReqDto.getContent());
             board.setMember(member);
             boardRepository.save(board);
@@ -129,7 +129,7 @@ public class BoardService {
            if (board.getMember().getEmail().equals(boardReqDto.getEmail())) {
                board.setTitle(boardReqDto.getTitle());
                board.setContent(boardReqDto.getContent());
-               board.setImgPAth(boardReqDto.getImgPath());
+               board.setImgPath(boardReqDto.getImgPath());
                boardRepository.save(board); // update
                return true;
            } else {
@@ -178,29 +178,60 @@ public class BoardService {
     }
 
     @Transactional
-    public void addComment(Long boardId, CommentReqDto commentReqDto) {
-        // id로 board 객체 가져오기
-        Board board = boardRepository.findById(boardId)
-                .orElseThrow(()-> new RuntimeException("게시글이 존재하지 않습니다."));
+    public boolean addComment(Long boardId, CommentReqDto commentReqDto) {
+        try {
+            // id로 board 객체 가져오기
+            Board board = boardRepository.findById(boardId)
+                    .orElseThrow(()-> new RuntimeException("게시글이 존재하지 않습니다."));
 
-        // email로 member 객체 가져오기
-        Member member = memberRepository.findByEmail(commentReqDto.getEmail())
-                .orElseThrow(()-> new RuntimeException("회원 정보가 존재하지 않습니다."));
-        // Dto -> entity로 변환
-        Comment comment = new Comment();
-        comment.setContent(commentReqDto.getContent());
-        comment.setMember(member);
-        comment.setBoard(board);
-        board.addComment(comment);
-        boardRepository.save(board);
+            // email로 member 객체 가져오기
+            Member member = memberRepository.findByEmail(commentReqDto.getEmail())
+                    .orElseThrow(()-> new RuntimeException("회원 정보가 존재하지 않습니다."));
+            // Dto -> entity로 변환
+            Comment comment = new Comment();
+            comment.setContent(commentReqDto.getContent());
+            comment.setMember(member);
+            comment.setBoard(board);
+            board.addComment(comment);
+            boardRepository.save(board);
+            return true;
+        } catch (Exception e) {
+            log.error("댓글 추가 실패 : {}", e.getMessage());
+            return false;
+        }
     }
+
+    @Transactional
+    public boolean removeComment(Long boardId, Long commentId) {
+        try {
+            Board board = boardRepository.findById(boardId)
+                    .orElseThrow(()-> new RuntimeException("게시글이 존재하지 않습니다."));
+            Comment targetComment = null; // 지울 댓글에 대한 변수 생성
+            for (Comment comment : board.getComments()) {
+                if (comment.getCommentId().equals(commentId)) {
+                    targetComment = comment;
+                    break;
+                }
+            }
+            if (targetComment == null) {
+                log.error("해당 댓글이 존재하지 않습니다.");
+            }
+            board.removeComment(targetComment);
+            boardRepository.save(board);
+            return true;
+        } catch (Exception e) {
+            log.error("댓글 제거 실패 : {}", e.getMessage());
+            return false;
+        }
+    }
+
 
     private BoardResDto convertEntityToDto(Board board) {
         BoardResDto boardResDto = new BoardResDto();
         boardResDto.setBoardId(board.getId());
         boardResDto.setTitle(board.getTitle());
         boardResDto.setContent(board.getContent());
-        boardResDto.setImgPath((board.getImgPAth()));
+        boardResDto.setImgPath((board.getImgPath()));
         boardResDto.setRegDate(board.getRegDate());
 
         List<CommentResDto> commentResDtoList = new ArrayList<>();
@@ -223,7 +254,7 @@ public class BoardService {
         boardResDto.setBoardId(board.getId());
         boardResDto.setTitle(board.getTitle());
         boardResDto.setContent(board.getContent());
-        boardResDto.setImgPath((board.getImgPAth()));
+        boardResDto.setImgPath((board.getImgPath()));
         boardResDto.setRegDate(board.getRegDate());
         boardResDto.setComments(new ArrayList<>());
         return boardResDto;

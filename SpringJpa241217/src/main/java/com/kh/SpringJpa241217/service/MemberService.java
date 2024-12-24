@@ -67,7 +67,16 @@ public class MemberService {
         }
     }
 
-    // Member Entity => MemberResDto
+    // Member Entity => MemberResDto 변환
+    private MemberResDto convertEntityToDtoWithoutBoard(Member member) {
+        MemberResDto memberResDto = new MemberResDto();
+        memberResDto.setEmail(member.getEmail());
+        memberResDto.setName(member.getName());
+        memberResDto.setRegDate(member.getRegDate());
+        memberResDto.setImagePath(member.getImgPath());
+        return memberResDto;
+    }
+
     private MemberResDto convertEntityToDto(Member member) {
         MemberResDto memberResDto = new MemberResDto();
         memberResDto.setEmail(member.getEmail());
@@ -81,13 +90,12 @@ public class MemberService {
             boardResDto.setBoardId(board.getId());
             boardResDto.setTitle(board.getTitle());
             boardResDto.setContent(board.getContent());
-            boardResDto.setImgPath(board.getImgPAth());
+            boardResDto.setImgPath(board.getImgPath());
             boardResDto.setRegDate(board.getRegDate());
             boardResDtoList.add(boardResDto);
-
         }
         memberResDto.setBoards(boardResDtoList);
-
         return memberResDto;
+
     }
 }

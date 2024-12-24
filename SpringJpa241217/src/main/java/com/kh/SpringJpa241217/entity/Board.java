@@ -26,7 +26,7 @@ public class Board {
     @Column(length = 1000)
     private String content; // 글 내용
 
-    private String imgPAth; // 게시글 이미지 경로
+    private String imgPath; // 게시글 이미지 경로
     private LocalDateTime regDate; // 게시글 등록 일자
     @PrePersist
     public void prePersist() {
@@ -53,7 +53,5 @@ public class Board {
         comments.remove(comment);
         comment.setBoard(null);
     }
-
-
-
+    
 }
