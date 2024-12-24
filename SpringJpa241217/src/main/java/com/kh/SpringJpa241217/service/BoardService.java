@@ -2,6 +2,7 @@ package com.kh.SpringJpa241217.service;
 
 import com.kh.SpringJpa241217.dto.BoardReqDto;
 import com.kh.SpringJpa241217.dto.BoardResDto;
+import com.kh.SpringJpa241217.dto.CommentReqDto;
 import com.kh.SpringJpa241217.dto.CommentResDto;
 import com.kh.SpringJpa241217.entity.Board;
 import com.kh.SpringJpa241217.entity.Comment;
@@ -60,7 +61,7 @@ public class BoardService {
         List<Board> boards = boardRepository.findAll(); // DB에 있는 모든 게시글 가져오기
         List<BoardResDto> boardResDtoList = new ArrayList<>();
         for (Board board : boards) {
-            // convertEntityToDto를 통해서 BoardResDto반환 받아서 List에 추가
+            // convertEntityToDto 를 통해서 BoardResDto 반환 받아서 List 에 추가
             boardResDtoList.add(convertEntityToDtoWithoutComments(board));
         }
         return boardResDtoList;
@@ -71,13 +72,13 @@ public class BoardService {
         List<Board> boards = boardRepository.findByTitleContaining(keyword);
         List<BoardResDto> boardResDtoList = new ArrayList<>();
         for (Board board : boards) {
-            // convertEntityToDto를 통해서 BoardResDto반환 받아서 List에 추가
+            // convertEntityToDto 를 통해서 BoardResDto 반환 받아서 List 에 추가
             boardResDtoList.add(convertEntityToDto(board));
         }
         return boardResDtoList;
     }
 
-    // size는 프론트엔드에서 지정해줘야함
+    // size 는 프론트엔드에서 지정해줘야함
     // 게시글 페이지 수 조회, 첫 페이지 화면열때만(렌더링) 호출하면됨
     public int getBoardPageCount(int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
@@ -174,6 +175,24 @@ public class BoardService {
             log.error("게시글에 대한 댓글 조회 실패 : {}",e.getMessage());
             return null;
         }
+    }
+
+    @Transactional
+    public void addComment(Long boardId, CommentReqDto commentReqDto) {
+        // id로 board 객체 가져오기
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(()-> new RuntimeException("게시글이 존재하지 않습니다."));
+
+        // email로 member 객체 가져오기
+        Member member = memberRepository.findByEmail(commentReqDto.getEmail())
+                .orElseThrow(()-> new RuntimeException("회원 정보가 존재하지 않습니다."));
+        // Dto -> entity로 변환
+        Comment comment = new Comment();
+        comment.setContent(commentReqDto.getContent());
+        comment.setMember(member);
+        comment.setBoard(board);
+        board.addComment(comment);
+        boardRepository.save(board);
     }
 
     private BoardResDto convertEntityToDto(Board board) {
