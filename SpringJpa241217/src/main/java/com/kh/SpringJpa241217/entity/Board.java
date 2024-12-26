@@ -22,7 +22,7 @@ public class Board {
     @Column(nullable = false)
     private String title; // 글 제목
 
-    @Lob
+    @Lob // DB에 큰 데이터를 저장할때 사용 Large Object, (긴 텍스트)
     @Column(length = 1000)
     private String content; // 글 내용
 
