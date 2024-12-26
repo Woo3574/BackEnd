@@ -20,7 +20,7 @@ public class MemberController {
 
 
     // 회원 전체 조회
-    @GetMapping("/memberlist")
+    @GetMapping("/list")
     public ResponseEntity<List<MemberResDto>> allMembers() {
         List<MemberResDto> memberResDtoList = memberService.getMemberList();
         return ResponseEntity.ok(memberResDtoList);
