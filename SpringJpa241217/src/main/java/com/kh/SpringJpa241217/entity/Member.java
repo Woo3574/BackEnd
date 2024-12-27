@@ -1,7 +1,9 @@
 package com.kh.SpringJpa241217.entity;
 
 
+import com.kh.SpringJpa241217.constant.Authority;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -40,10 +42,10 @@ public class Member {
     @Column (name = "image_path")
     private String imgPath;
 
-    @PrePersist //JPA, 엔티티가 저장되기 직전에 실행
-    protected void onCreate() { // JPA의 콜백 메서드로 엔티티가 저장되기 전에 실행; DB 데이터가 삽입되기 전에 자동 설정
-        this.regDate = LocalDateTime.now(); // 등록 일자를 현재 시간으로 설정
-    }
+    //   @PrePersist //JPA, 엔티티가 저장되기 직전에 실행
+   // protected void onCreate() { // JPA의 콜백 메서드로 엔티티가 저장되기 전에 실행; DB 데이터가 삽입되기 전에 자동 설정
+    //    this.regDate = LocalDateTime.now(); // 등록 일자를 현재 시간으로 설정
+   // }
 
     // 게시글 목록에 대한 OneToMany
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true) // 주인이 아님을 의미, 즉 객체를 참조만 함
@@ -51,4 +53,18 @@ public class Member {
     
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true) // 주인이 아님을 의미, 즉 객체를 참조만 함
     private List<Comment> comments = new ArrayList<>();
+
+    @Enumerated(EnumType.STRING)
+    private Authority authority;
+
+    @Builder
+    public Member(String email, String name, String pwd, String img, Authority authority) {
+        this.email = email;
+        this.pwd = pwd;
+        this.name = name;
+        this.imgPath = img;
+        this.authority = authority;
+        this.regDate = LocalDateTime.now();
+    }
+
 }
