@@ -27,10 +27,10 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.AUTO) // 기본키 생성 전략, Jpa 가 자동으로 생성 전략을 정함
     private Long id; // Primary Key
 
-    @Column(nullable = false, length = 50) // null 값이 올수 없다는 제약 조건
+    @Column(nullable = false) // null 값이 올수 없다는 제약 조건
     private String email;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false)
     private String pwd;
 
     @Column(nullable = false, length = 50)
