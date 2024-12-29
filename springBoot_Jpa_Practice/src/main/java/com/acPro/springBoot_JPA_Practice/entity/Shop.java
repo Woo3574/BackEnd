@@ -1,3 +1,5 @@
+package com.acPro.springBoot_JPA_Practice.entity;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,7 +18,7 @@ public class Shop {
     @Column(name = "shop_id")
     private Long id;
 
-    @Column(name = "shop_name", nullable = false)
+    @Column(name = "shop_name", nullable = false, unique = true)
     private String name;
 
     @Column(name = "shop_addr", nullable = false)

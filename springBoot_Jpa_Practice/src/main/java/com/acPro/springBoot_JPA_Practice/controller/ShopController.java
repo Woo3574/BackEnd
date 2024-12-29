@@ -13,8 +13,13 @@ import java.util.List;
 @RequestMapping("/shop")
 @RequiredArgsConstructor
 
-public class shopController {
+public class ShopController {
     private final ShopService shopService;
+
+    @GetMapping("/list")
+    public List<ShopResDto> listAllShop () {
+        return shopService.listShop();
+    }
 
     @PostMapping("/add")
     public ShopResDto addShop(@RequestBody ShopResDto shopResDto) {

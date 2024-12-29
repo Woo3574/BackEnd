@@ -20,8 +20,21 @@ import java.util.stream.Collectors;
 public class ShopService {
     private final ShopRepository shopRepository;
 
+    // 매장 목록
+    public List<ShopResDto> listShop() {
+        List<Shop> shops = shopRepository.findAll();
+        return shops.stream()
+                .map(shop -> new ShopResDto(shop.getName(), shop.getAddr()))
+                .collect(Collectors.toList());
+    }
+
     // 매장 추가
     public ShopResDto addShop(ShopResDto shopResDto) {
+
+        Shop existShop = shopRepository.findByName(shopResDto.getName());
+        if (existShop != null) {
+            throw new RuntimeException("이미 존재하는 매장입니다.");
+        }
 
         // ShopResDto(를) Shop 엔티티로 변환
         Shop shop = new Shop();
