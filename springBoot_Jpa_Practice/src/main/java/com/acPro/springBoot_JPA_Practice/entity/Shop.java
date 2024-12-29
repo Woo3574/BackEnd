@@ -1,5 +1,3 @@
-package com.acPro.springBoot_JPA_Practice.entity;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
