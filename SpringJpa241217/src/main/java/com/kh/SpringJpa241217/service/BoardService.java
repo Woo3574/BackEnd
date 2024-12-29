@@ -30,7 +30,7 @@ public class BoardService {
     @Transactional
     public boolean saveBoard(BoardReqDto boardReqDto) {
         try {
-            // FrontEnd에서 전달한 이메일로 회원 정보를 가져 옴
+            // FrontEnd(에서) 전달한 이메일로 회원 정보를 가져 옴
             Member member = memberRepository.findByEmail(boardReqDto.getEmail())
                     .orElseThrow(() -> new RuntimeException("해당 회원이 존재하지 않습니다."));
 
