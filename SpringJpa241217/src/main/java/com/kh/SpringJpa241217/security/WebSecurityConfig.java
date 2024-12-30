@@ -28,7 +28,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         return new BCryptPasswordEncoder(); // BCrypt 암호화 객체를 Bean으로 등록
     }
 
-    @Bean // SecurityFilterChain 객체를 Bean으로 등록
+    @Bean // SecurityFilterChain 객체를 Bean(으로) 등록
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
 
