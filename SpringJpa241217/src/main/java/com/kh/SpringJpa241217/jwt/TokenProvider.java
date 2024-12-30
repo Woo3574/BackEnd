@@ -31,7 +31,7 @@ public class TokenProvider {
     private final Key key; // JWT 서명에 사용할 비밀키
 
     // 비밀키를 기반으로 키 객체 초기화
-    // 주의점 : @Value 어노테이션은 springframework의 어노테이션이다.
+    // 주의점 : @Value 어노테이션은 springframework(의) 어노테이션이다.
     public TokenProvider(@Value("${jwt.secret}") String secretKey) {
         this.key = Keys.hmacShaKeyFor(secretKey.getBytes());
     }
@@ -46,6 +46,7 @@ public class TokenProvider {
         // 현재 시간과 토큰 만료 시간 계산
         long now = (new Date()).getTime();
         Date accessTokenExpiresIn = new Date(now + 30 * 60 * 1000); // 30분
+        Date refreshTokenExpiresIn = new Date(now + 30 * 60 * 1000 * 48 * 6); // 6일
 
         // Access Token 생성
         String accessToken = Jwts.builder()
@@ -55,11 +56,21 @@ public class TokenProvider {
                 .signWith(key, SignatureAlgorithm.HS512) // 서명 방식 설정
                 .compact();
 
-        // 결과를 DTO로 반환
+        // Refresh Token 생성
+        String refreshToken = Jwts.builder()
+                .setSubject(authentication.getName()) // 사용자명 설정
+                .claim(AUTHORITIES_KEY, authorities)  // 권한 정보 저장
+                .setExpiration(refreshTokenExpiresIn)  // 만료 시간 설정
+                .signWith(key, SignatureAlgorithm.HS512) // 서명 방식 설정
+                .compact();
+
+        // 결과를 DTO(로) 반환
         return TokenDto.builder()
                 .grantType("Bearer")
-                .accessToken(accessToken)
-                .tokenExpiresIn(accessTokenExpiresIn.getTime())
+                .accessToken(accessToken) // 액세스 토큰
+                .accessTokenExpiresIn(accessTokenExpiresIn.getTime()) // 액세스 토큰 만료 시간
+                .refreshToken(refreshToken) // 리프레쉬 토큰
+                .refreshTokenExpiresIn(refreshTokenExpiresIn.getTime()) // 리프레쉬 토큰 만료 시간
                 .build();
     }
 
