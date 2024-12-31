@@ -17,7 +17,7 @@ response = requests.post(url, data=json.dumps(member), headers=headers)
 
 # 응답 처리
 if response.status_code == 200:
-    # print("회원 가입에 성공 했습니다.")
+    # print("회원 가입에 성공 했습니다.")#
     # Server(에서) 전달 받은 JSON(을) 객체로 변환 하고 내용을 출력
     data = response.json()
     print(f"이메일 : {data['email']}")
