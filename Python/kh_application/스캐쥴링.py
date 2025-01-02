@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup # 파싱
 
 def perform_web_crawling():
     response = requests.get("http://www.naver.com")
-    soup=""
+    soup = ""
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, "html.parser")
     print(soup)
