@@ -21,6 +21,8 @@ def get_sample_weather():
 # 위치정보를 받아서 해당 위치의 현재 온도, 습도, 강수량 표시 되도록 수정
 
 def get_short_term_weather():
+    nx_val = request.args.get('x', default=None, type=None)
+    ny_val = request.args.get('y', default=None, type=None)
     API_KEY_DECODE = 'mI+gyKRhNvjqLz9+bo4rklluEgYZtCzT2QdnmAhTi0JUpH1FRU8LlRW1euS6dasdu7n5nPqf7AhevJCDH6G21g=='
 
     # 현재 시간 가져 오기
@@ -43,8 +45,8 @@ def get_short_term_weather():
     baseTime = time
     # 예보 지점 (서울시 강남구 역삼동)
     # 지표면 좌표값 (기상청 사용)
-    nx_val = 62
-    ny_val = 126
+    # nx_val = 62
+    # ny_val = 126
     # 한 페이지에 포함된 결과 수
     num_of_rows = 6
     page_no = 1
