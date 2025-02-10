@@ -64,3 +64,69 @@ print(num_a12)
 a13 = np.array(["1", "2", "3", "4", "5", "6", "7"])
 num_a13 = a13.astype(int)
 print(num_a13)
+
+#  난수 배열의 생성
+# rand() : 0 ~ 1 미만의 실수를 난수 배열을 생성
+# a14 = np.random.rand(2, 3)
+a14 = (np.random.rand(6) * 45) + 1
+print(a14.astype(int))
+
+# 지정한 범위에 해당 하는 정수로 난수 배열을 생성 : randint()
+a15 = np.random.randint(10, size=(5, 10)) # 0 ~ 9 사이의 임의이 값을 사이즈 만큼 생성
+print(a15)
+
+# numPy 기본 연산 : 각 요소끼리 연산이 가능
+arr1 = np.array([1, 2, 3])
+arr2 = np.array([4, 5, 6])
+
+print(arr1 + arr2)
+print(arr1 - arr2)
+print(arr1 * arr2)
+print(arr1 / arr2)
+print(arr1 ** 2)
+print(arr2 > 5)
+
+# 통계 연산
+arr3 = np.arange(10) # 0 ~ 9까지 데이터 생성
+print(f"합계 : {arr3.sum()}")
+print(f"평균 : {arr3.mean()}")  # sum(arr3) / len(arr3)
+print(f"표준편차 : {arr3.std()}")
+print(f"분산 : {arr3.var()}")
+print(f"최대값 : {arr3.max()}")
+print(f"최대값 : {arr3.min()}")
+
+arr4 = np.array([9, 7, 6, 12, 3, 45, 18, 1])
+print(np.sort(arr4)) # 오름차순 정렬
+print(np.argsort(arr4)) # 정렬된 인덱스 반환
+
+arr5 = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9])
+# 인덱싱
+print(arr5[6])
+# 슬라이싱
+print(arr5[5:]) # 6, 7, 8, 9
+print(arr5[2:6]) # 3, 4, 5, 6
+
+# 1번 문제 : 1부터 10까지의 숫자로 이루어진 1차원 배열을 생성하고, 모든 요소에 5를 더한 결과를 출력하세요.
+ar1 = np.arange(1, 10)
+print(ar1 + 5)
+
+# 2번 문제 : 1부터 9까지의 숫자를 사용하여 3x3 크기의 2차원 배열을 생성하고 출력하세요.
+ar2 = np.arange(9).reshape(3, 3)
+print(ar2)
+
+# 3번 문제 :
+# 1부터 20까지의 숫자로 이루어진 배열을 생성하고, 다음을 계산하세요.
+# 1.	배열의 합계
+# 2.	배열의 평균
+# 3.	배열의 최댓값과 최솟값
+ar3 = np.arange(1,21)
+print(f"배열의 합계 : {ar3.sum()}")
+print(f"배열의 평균 : {ar3.mean()}")
+print(f"배열의 최댓값 : {ar3.max()}")
+print(f"배열의 최솟값 : {ar3.min()}")
+
+# 4번 문제 : 0 에서 100 사이의 난수를 10개 생성 하고, 50 이상인 값을 출력
+ar4 = np.random.randint(0, 101, size = 10)
+
+filtered_values = ar4[ar4 > 50]  # 50보다 큰 값만 선택
+print("50보다 큰 값:", filtered_values)
