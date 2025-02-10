@@ -3,6 +3,7 @@
 # Series - 1차원 데이터 구조, 리스트와 유사하지만 인덱스(라벨)가 붙어있음
 import numpy as np
 import pandas as pd
+from pandas.core.interchange.dataframe_protocol import DataFrame
 
 s1 = pd.Series([10, 20, 30, 40, 50])
 print(s1)
@@ -26,7 +27,8 @@ print(s4)
 data = {
     '이름': ['민지', '하니', '해린', '혜인', '다니엘'],
     '수학': [90, 80, 70, 60, np.nan],
-    '영어': [98, 100, np.nan, 89, 99]
+    '영어': [98, 100, np.nan, 89, 99],
+    '반': ['A', 'B', 'A', 'B', 'C']
 }
 
 df = pd.DataFrame(data)
@@ -43,11 +45,39 @@ print(df.loc[1, '영어']) # 특정 값 추출
 # 새로운 열 및 행 추가
 df['국어'] = [100, 98, 98, 70, 45] # 새로운 열 추가
 print(df)
-df.loc[5] = ['박지숙', 67 ,45 ,30]
+df.loc[5] = ['박지숙', 67 ,45, 'C', 30]
 print(df)
 
 # 기본 연산
-print(df['수학'].sum())
-print(df['수학'].mean())
+print(f"합계: {df[['수학','영어']].sum().sum()}")
+print(f"평균: {df[['수학', '영어']].mean().mean()}")
 print(df['수학'].max())
 print(df['수학'].min())
+
+# 그룹화 및 집계
+# 반별 수학, 과학, 영어 평균 점수
+class_avg = df.groupby('반')[['수학', '영어', '국어']].mean()
+print(f"반별 평균 : {class_avg}")
+
+# 여러 컬럼에 대한 집계 수행
+class_avg2 = df.groupby('반').agg({'수학': 'mean', '영어':'mean', '국어': 'mean'})
+print(f"반별 평균 : {class_avg2}")
+
+# 1. 각 반별 수학과 영어 평균을 동시에 출력 하기
+class_avg3 = df.groupby('반')[['수학','영어']].mean()
+print(f" 반별 평균 : {class_avg3}")
+# 2. 각 반별 수학 점수의 최대값과 최소값 구하기
+class_avg4 = df.groupby('반')[['수학']].max()
+class_avg5 = df.groupby('반')[['수학']].min()
+print(f" 반별 수학 점수 최댓값 : {class_avg4}, 최솟값 : {class_avg5}")
+# 3. 과일의 가격 평균과 판매량 평균을 구해 보세요.
+
+data1 = {
+    '제품':['사과', '딸기', '수박'],
+    '가격':[1800, 1500, 3000],
+    '판매량':[24, 38, 13]
+}
+
+df1 = pd.DataFrame(data1)
+fruit_avg = df1.groupby('제품')[['가격','판매량']].sum().mean()
+print(fruit_avg)
