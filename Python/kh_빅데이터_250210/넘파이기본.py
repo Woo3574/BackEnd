@@ -107,11 +107,11 @@ print(arr5[5:]) # 6, 7, 8, 9
 print(arr5[2:6]) # 3, 4, 5, 6
 
 # 1번 문제 : 1부터 10까지의 숫자로 이루어진 1차원 배열을 생성하고, 모든 요소에 5를 더한 결과를 출력하세요.
-ar1 = np.arange(1, 10)
+ar1 = np.arange(1, 11)
 print(ar1 + 5)
 
 # 2번 문제 : 1부터 9까지의 숫자를 사용하여 3x3 크기의 2차원 배열을 생성하고 출력하세요.
-ar2 = np.arange(9).reshape(3, 3)
+ar2 = np.arange(1, 10).reshape(3, 3)
 print(ar2)
 
 # 3번 문제 :
@@ -122,11 +122,10 @@ print(ar2)
 ar3 = np.arange(1,21)
 print(f"배열의 합계 : {ar3.sum()}")
 print(f"배열의 평균 : {ar3.mean()}")
-print(f"배열의 최댓값 : {ar3.max()}")
-print(f"배열의 최솟값 : {ar3.min()}")
+print(f"배열의 최댓값 : {ar3.max()}, 배열의 최솟값 : {ar3.min()}")
 
 # 4번 문제 : 0 에서 100 사이의 난수를 10개 생성 하고, 50 이상인 값을 출력
 ar4 = np.random.randint(0, 101, size = 10)
-
-filtered_values = ar4[ar4 > 50]  # 50보다 큰 값만 선택
-print("50보다 큰 값:", filtered_values)
+print(ar4[ar4>= 50])
+# filtered_values = ar4[ar4 >= 50]  # 50보다 큰 값만 선택
+# print("50보다 큰 값:", filtered_values)
