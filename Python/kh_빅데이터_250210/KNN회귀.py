@@ -52,3 +52,25 @@ mae = mean_absolute_error(test_target, test_prediction)
 print(f"평균 절대값 오차 : {mae}")
 
 # 과대 적합 vs 과소 적합
+# 과대 적합 : 몰데이 훈련 세트에 너무 맞춰져 새로운 데이터에 대한 예측력이 떨어진느 것
+# - 훈련 세트 점수는 높지만 테스트 세트 점수가 낮게 나옴
+# 과속 적합 : 모델이 충분히 훈련되지 않아 데이터 패턴을 잘 학습하지 못한 경우
+# - 훈련 세트와 테스트 세트 점수가 모두 낮은 경우, 테스트 세트 점수가 훈련 세트 보다 높은 경우
+
+# 훈련 세트 점수
+train_score = knr.score(train_input, train_target)
+print(f"훈련 세트 결정 계수(R^2) : {train_score}")
+# 테스트 세트 점수
+test_score = knr.score(test_input, test_target)
+print(f"훈련 세트 결정 계수(R^2) : {test_score}")
+
+# 모델 개선 : 이웃 수 변경
+# 과소 적합을 해결하기 위해서는 모델의 복잡도를 높이기 위해서는 k(이웃의 개수)를 줄이면 복잡도 증가
+knr.n_neighbors = 3
+# 훈련 세트 점수
+train_score = knr.score(train_input, train_target)
+print(f"훈련 세트 결정 계수(R^2) : {train_score}")
+# 테스트 세트 점수
+test_score = knr.score(test_input, test_target)
+print(f"훈련 세트 결정 계수(R^2) : {test_score}")
+
