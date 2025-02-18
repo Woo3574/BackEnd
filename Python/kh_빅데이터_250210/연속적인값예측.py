@@ -57,3 +57,30 @@ plt.scatter(50, 1241.8, marker='^')
 plt.xlabel('length')
 plt.ylabel('weight')
 plt.show()
+
+# 다항 회귀: 2차 방정식 그래프를 그리기 위해서 길이의 제곱한 항이 훈련 세트에 추가 되어야 함.
+train_poly = np.column_stack((train_input ** 2, train_input))
+test_poly = np.column_stack((test_input ** 2, test_input))
+
+print(train_poly.shape, test_poly.shape)
+
+lr = LinearRegression()
+lr.fit(train_poly, train_target)
+
+print(lr.predict([[50**2, 50]]))
+
+# 시각화 하기
+# 구간별 직선을 그리기 위해 15에서 49까지 정수 배열을 만듭니다.
+point = np.arange(15, 50)
+
+# 훈련 세트이 산점도를 그립니다.
+plt.scatter(train_input, train_target)
+
+# 15에서 49까지 2차 방정식 그래프를 그립니다.
+plt.plot(point, 1.01*point**2 - 21.6*point + 116.05)
+
+# 50cm 농어 데이터
+plt.scatter(50, 1574, marker='^')
+plt.xlabel('length')
+plt.ylabel('weight')
+plt.show()
