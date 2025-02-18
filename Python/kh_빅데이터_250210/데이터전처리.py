@@ -33,6 +33,7 @@ score = kn.score(test_input, test_target)
 print(f"모델 학습 결과 : {score:.2f}")
 
 # 표준화 적용 : 표준 편차
+# 데이터의 평균을 빼고 표준 편차로 나누어 모든 데이터를 동일한 스케일로 맞춤
 mean = np.mean(train_input, axis=0)
 std = np.std(train_input, axis=0)
 train_scaled = (train_input - mean) / std
