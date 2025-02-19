@@ -5,6 +5,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler  # 데이터를 표준화하는 도구(평균을 0, 표준편차 1)
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.linear_model import LogisticRegression
 
 # 1.데이터 불러오기
 fish = pd.read_csv('https://bit.ly/fish_csv_data')
@@ -33,3 +34,28 @@ print(f"훈련 세트 정확도 : {kn.score(train_scaled, train_target)}")
 print(f"테스트 세트 정확도 : {kn.score(test_scaled, test_target)}")
 print(f"테스트 데이터 정확도 : {kn.predict(test_scaled[:5])}")
 print(f"각 클래스의 확률 예측 : {kn.predict_proba(test_scaled[:5])}")
+
+# 6. 로지스틱 회귀 (이진 분류 : Bream vs Smelt)
+bream_smelt_indexes = (train_target == 'Bream') | (train_target == 'Smelt')
+train_bream_smelt = train_scaled[bream_smelt_indexes]
+target_bream_smelt = train_target[bream_smelt_indexes]
+
+lr_binary = LogisticRegression()
+lr_binary.fit(train_bream_smelt, target_bream_smelt)
+
+print("\n📌 로지스틱 회귀 (이진 분류) 성능:")
+print("이진 분류 예측 결과:", lr_binary.predict(train_bream_smelt[:5]))
+print("이진 분류 확률 예측:", lr_binary.predict_proba(train_bream_smelt[:5]))
+print("이진 분류 계수:", lr_binary.coef_)
+print("이진 분류 절편:", lr_binary.intercept_)
+
+# 7️⃣ 로지스틱 회귀 (다중 분류: 전체 7개 물고기 분류)
+lr_multi = LogisticRegression(C=20, max_iter=1000)
+lr_multi.fit(train_scaled, train_target)
+
+print("\n📌 로지스틱 회귀 (다중 분류) 성능:")
+print("훈련 세트 정확도:", lr_multi.score(train_scaled, train_target))
+print("테스트 세트 정확도:", lr_multi.score(test_scaled, test_target))
+print("테스트 데이터 예측 결과:", lr_multi.predict(test_scaled[:5]))
+print("다중 클래스 확률 예측:", lr_multi.predict_proba(test_scaled[:5]))
+
